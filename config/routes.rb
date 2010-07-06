@@ -1,4 +1,8 @@
 Movies::Application.routes.draw do |map|
+  get "test/hello"
+
+  get "test/goodbye"
+
   get "say/hello"
 
   resources :movies
