@@ -1,9 +1,14 @@
 Movies::Application.routes.draw do |map|
+  resources :users
+
   get "test/hello"
 
   get "test/goodbye"
 
   get "say/hello"
+  
+   match '/signup',  :to => 'users#new'
+
 
   resources :movies
 

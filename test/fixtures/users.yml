@@ -1,12 +1,11 @@
 # == Schema Information
 # Schema version: 20100709210545
 #
-# Table name: movies
+# Table name: users
 #
 #  id         :integer         not null, primary key
-#  title      :string(255)
-#  release    :date
-#  desription :text
+#  name       :string(255)
+#  email      :string(255)
 #  created_at :datetime
 #  updated_at :datetime
 #
@@ -14,11 +13,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  title: MyString
-  release: 2010-06-15
-  desription: MyText
+  name: MyString
+  email: MyString
 
 two:
-  title: MyString
-  release: 2010-06-15
-  desription: MyText
+  name: MyString
+  email: MyString
