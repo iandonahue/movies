@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Movies</title>
+  <title>John's Movies. Again. |  <%= @title %> </title>
   <%= stylesheet_link_tag :all %>
   <%= render 'layouts/stylesheets' %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
+  
+  <div id="content" class="round">
+        <% flash.each do |key, value| %>
+          <div class="flash <%= key %>"><%= value %></div>
+        <% end %> 
+        
+      </div>
+  
   <div class="container">
     <%= render 'layouts/header' %>
 

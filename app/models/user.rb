@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
                        
   before_save :encrypt_password
   
+  default_scope :order => 'users.created_at'
+  
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
   end
@@ -36,6 +38,11 @@ class User < ActiveRecord::Base
     user = find_by_email(email)
     return nil  if user.nil?
     return user if user.has_password?(submitted_password)
+  end
+  
+  def self.authenticate_with_salt(id, cookie_salt)
+    user = find_by_id(id)
+    (user && user.salt == cookie_salt) ? user : nil
   end
   
   private
@@ -49,8 +56,12 @@ class User < ActiveRecord::Base
       secure_hash("#{Time.now.utc}--#{password}")
     end
     
+    def make_salt
+      secure_hash("#{Time.now.utc}--#{password}")
+    end
+    
     def secure_hash(string)
-      Digest::SHA2.hexidigest(string)
+      Digest::SHA2.hexdigest(string)
     end
        
 end

@@ -1,14 +1,29 @@
 Movies::Application.routes.draw do |map|
-  resources :users
-
-  get "test/hello"
-
-  get "test/goodbye"
-
-  get "say/hello"
+ 
+  match '/contact', :to => 'pages#contact' 
+  match '/about',   :to => 'pages#about'
+  match '/help',    :to => 'pages#help'
+  match '/home',     :to => 'pages#home'
   
-   match '/signup',  :to => 'users#new'
+  root :to => 'pages#home'
+ 
+ 
+ 
+ 
+  get "pages/home"
+  get "pages/contact"
+  get "pages/about"
 
+  get "sessions/new"
+
+  resources :users
+  
+  resources :sessions, :only => [:new, :create, :destroy]
+  
+   match '/signup',  :to => 'users#new'   
+   match '/signin',   :to => 'sessions#new'
+   match '/signout',   :to => 'sessions#destroy'
+   
 
   resources :movies
 
