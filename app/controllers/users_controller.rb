@@ -46,15 +46,13 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
-
-    
-      if @user.save
-        sign_in @user
-        flash[:success] = "Welcome to John's Movies. Again."
-        redirect_to @user
-      else
-        @title = "Sign Up"
-        render "new"
+    if @user.save
+       sign_in @user
+       flash[:success] = "Welcome to John's Movies. Again."
+       redirect_to @user
+    else
+       @title = "Sign Up"
+       render "new"
       end
    
   end
