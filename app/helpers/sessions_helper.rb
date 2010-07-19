@@ -1,10 +1,14 @@
 module SessionsHelper
   
-  attr_accessor :current_user
+
     
   def sign_in(user)
-      cookies.permanent.signed[:remember_token] = [user.id, user.salt]
-      current_user = user
+    # user.remember_me!
+    # cookies[:remember_token] = { :value   => user.remember_token,
+    #                              :expires => 20.years.from_now.utc }
+    # self.current_user = user
+     cookies.permanent.signed[:remember_token] = [user.id, user.salt]
+     current_user = user
     end
 
   def current_user=(user)
