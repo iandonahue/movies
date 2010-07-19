@@ -1,6 +1,6 @@
 module SessionsHelper
   
-
+#comment just to ceate new commit
     
   def sign_in(user)
     # user.remember_me!
