@@ -1,21 +1,10 @@
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.xml
+
   before_filter :authenticate, :only => [:edit, :update, :index]
-  before_filter :correct_user, :only => [:edit, :update,]  
+  before_filter :correct_user, :only => [:edit, :update]
+  before_filter :admin_user,   :only => :destroy  
   
   
-#  def index
-#    @users = User.all
-
-#    respond_to do |format|
-#      format.html # index.html.erb
-#      format.xml  { render :xml => @users }
-#    end
-#  end
-
-  # GET /users/1
-  # GET /users/1.xml
   def show
     @user = User.find(params[:id])
    # @title = @user.name
@@ -26,8 +15,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/new
-  # GET /users/new.xml
   def new
     @user = User.new
     @title = "Sign up"
@@ -38,13 +25,10 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1/edit
   def edit
     @title = "Edit User"
   end
 
-  # POST /users
-  # POST /users.xml
   def create
     @user = User.new(params[:user])
     if @user.save
@@ -54,12 +38,9 @@ class UsersController < ApplicationController
     else
        @title = "Sign Up"
        render "new"
-      end
-   
+    end
   end
 
-  # PUT /users/1
-  # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
@@ -73,19 +54,14 @@ class UsersController < ApplicationController
 
   def index
     @title = "All Users"
-    @users = User.all
+    @users = User.paginate(:page => params[:page])
   end
   
-  # DELETE /users/1
-  # DELETE /users/1.xml
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(users_url) }
-      format.xml  { head :ok }
-    end
+  def destroy
+    @user = User.find(params[:id]).destroy
+    flash[:success] = "User destroyed"
+    redirect_to users_path
   end
   
   private
@@ -98,6 +74,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     redirect_to(root_path) unless current_user?(@user)
   end
+     
+  def admin_user
+    redirect_to(root_path) unless current_user.admin?
+  end
+       
      
 end
 
