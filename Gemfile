@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 group :development do
    gem 'annotate-models'
+   gem 'faker', '0.3.1'
 end
 
 

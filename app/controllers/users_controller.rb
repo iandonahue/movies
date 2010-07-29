@@ -1,23 +1,24 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
+  before_filter :authenticate, :only => [:edit, :update, :index]
+  before_filter :correct_user, :only => [:edit, :update,]  
   
   
-  
-  def index
-    @users = User.all
+#  def index
+#    @users = User.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-    end
-  end
+#    respond_to do |format|
+#      format.html # index.html.erb
+#      format.xml  { render :xml => @users }
+#    end
+#  end
 
   # GET /users/1
   # GET /users/1.xml
   def show
     @user = User.find(params[:id])
-    @title = @user.name
+   # @title = @user.name
 
     respond_to do |format|
       format.html # show.html.erb
@@ -39,7 +40,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @title = "Edit User"
   end
 
   # POST /users
@@ -61,18 +62,20 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+    if @user.update_attributes(params[:user])
+      flash[:success] = "Profile updated."
+      redirect_to @user
+    else
+      @title = "Edit User"
+      render 'edit'
     end
   end
 
+  def index
+    @title = "All Users"
+    @users = User.all
+  end
+  
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
@@ -84,4 +87,18 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  private
+
+  def authenticate
+    deny_access unless signed_in?
+  end
+  
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless current_user?(@user)
+  end
+     
 end
+
+
